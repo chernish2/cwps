@@ -1,8 +1,9 @@
-# Run this script with root priveleges: sudo ruby swps.rb
+# Run this script with root priveleges: sudo ruby cwps.rb
 
 WAIT_FOR_WASH = 45 #seconds
 
 def check_packages
+  puts "Checking needed packages..."
   airmon = `airmon-zc`
   if airmon.include?("No command")
     puts "Please install aircrack-ng: https://www.aircrack-ng.org/"
@@ -17,8 +18,9 @@ def check_packages
     puts "Please install wash"
     exit
   end
-  reaver = `reaver`
-  if !reaver.include?("Run pixiedust attack")
+  # reaver = `reaver`
+  reaver = exec('reaver')
+  if !reaver.include?("--pixie-dust")
     puts "Please install reaver (exactly this version): https://github.com/t6x/reaver-wps-fork-t6x"
     exit
   end
@@ -148,7 +150,7 @@ def input_number(max)
   n
 end
 
-check_packages
+# check_packages
 wlan_iface = get_wlan_interface
 wlan_iface_name = wlan_iface[:name]
 if !wlan_iface[:monitor]
